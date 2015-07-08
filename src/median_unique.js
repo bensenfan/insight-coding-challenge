@@ -50,16 +50,18 @@ function findMedian(half){
 
 /*
 Algorithm:
+  0. Clear the output file to write. This may be unnecessary if this is for production this
   1. Scan each tweet, we again use a dictionary to store unique words. 
      This time instead of keep a tally we just store the value as true, 
      since it's the number of keys we're after. 
   2. After a tweet is finished being read, we count the dictionary's 
      number of keys to get the unique word count, and insert this into 
-     the wordCountArray, which is the sorted list.
-  3. Then we find the median, and save it to the medianArray. After we 
-     are done wit hteh entire file, we loop through the medianArray and 
-     write to ft2.txt
+     the right location inwordCountArray, which remains sorted.
+  3. Then we find the median and write to ft2.txt
 */
+
+fs.writeFile(outputFile, '');//clear file for fresh write
+
 readable.on('data', function(data){
   var tweets = data.split('\n'); 
 
@@ -69,27 +71,14 @@ readable.on('data', function(data){
     var uniqueWords = {}; //use a dictionary to store unique words as key. 
 
     words.forEach(function(word){
+      //This removes the duplicates by default, leaving only unique values
       uniqueWords[word] = true;
     })
 
     var count = Object.keys(uniqueWords).length;
     
-    //insert new count to the right location of wordCountArray so it remains sorted
     insert(count, wordCountArray) 
-
-    // find median
     var median = findMedian(wordCountArray.length/2);
-    
-    medianArray.push(median);
+    fs.appendFile(outputFile, median+'\n'); 
   }
-})
-
-readable.on('end', function(){
-  var stringToFile = '';
-  medianArray.forEach(function(data){
-    //fs.appendFile(outputFile, data+'\n'); //in a real life situation this is how I would write to the file
-    stringToFile += data+'\n';
-  })
-  // For testing purpose, save everything to a string and overwrite the file
-  fs.writeFile(outputFile, stringToFile);
 })

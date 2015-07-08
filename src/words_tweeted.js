@@ -11,14 +11,13 @@ var wordCounter = {}; //dictionary, the words are the keys, and their counts are
 
 /*
 	Algorithm:
+	0. Clear the output file for fres write.
 	1. We read the file, and for each tweet, we split the text into words by ' '
 	2. For each word, we save it and increment the count using the dictionary wordCounter object
 	3. After the tweets are all read, we get the list of keys from wordCounter and sort the list
 	4. We loop through the sorted list, and write to ft1.txt
-	NOTE: In a real world scenario, instead of saving everything to a string, I would just append
-				each word to the end of the file. However, for testing purpose, I decided to write a big 
-				string instead. This is just for testing this feature. 
 */
+fs.writeFile(outputFile, '');//clear file for write
 readable.on('data', function(data){
 	var tweets = data.split('\n');
 
@@ -41,12 +40,7 @@ readable.on('end', function(){
 	var keys = Object.keys(wordCounter);
 	keys = keys.sort();
 
-	// For testing purpose, save everything to a string and overwrite the file
-	var stringToFile = '';
 	keys.forEach(function(key){
-		//fs.appendFile(outputFile, key+' '+wordCounter[key]+'\n'); //in a real life situation this is how I would write to the file
-		stringToFile += key+' '+wordCounter[key]+'\n';
+		fs.appendFile(outputFile, key+' '+wordCounter[key]+'\n'); 
 	})
-	// For testing purpose, save everything to a string and overwrite the file
-	fs.writeFile(outputFile, stringToFile);
 })
