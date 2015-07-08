@@ -1,6 +1,8 @@
 # insight-coding-challenge
 Coding challenge for Insight Data Engineering camp
 
+This coding challenge is completed using the Node.js platform. To test the code, you'll need to install Node, which can be found here: https://nodejs.org/
+
 INSTRUCTIONS: 
 ----------------
 This challenge is to implement two features:
