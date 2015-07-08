@@ -21,19 +21,13 @@ fs.writeFile(outputFile, '');//clear file for write
 readable.on('data', function(data){
 	var tweets = data.split('\n');
 
-	for (line in tweets) {
-		var tweet = tweets[line];
+	tweets.forEach(function(tweet){
 		var words = tweet.split(' ');
 
-		for (counter in words){
-			var word = words[counter];
-			if (wordCounter[word]){
-				wordCounter[word]++;
-			} else {
-				wordCounter[word] = 1;
-			}
-		};
-	}
+		words.forEach(function(word){
+			wordCounter[word] = wordCounter[word]++ ? wordCounter[word] : 1
+		})
+	})
 })
 
 readable.on('end', function(){
